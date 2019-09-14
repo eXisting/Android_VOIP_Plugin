@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.google.firebase.MessagingUnityPlayerActivity;
+
 public class CallActivity extends Activity {
 
     private MediaPlayer mMediaPlayer;
@@ -46,7 +48,11 @@ public class CallActivity extends Activity {
 
     public void AcceptCall(View view) {
         Log.i("CallActivity", "AcceptCall");
-        finish();
+        stopDefaultNotificationRingtone();
+
+        Intent i=new Intent(this,MessagingUnityPlayerActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
     }
 
     public void DeclineCall(View view) {
