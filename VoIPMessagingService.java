@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -20,8 +21,8 @@ import java.util.Map;
 public class VoIPMessagingService extends FirebaseMessagingService {
     private static String TITLE_KEY = "title";
     private static String MESSAGE_KEY = "body";
-    private static String SESSION_ID_KEY = "sessionRoomID";
-    private static String CALLER_KEY = "callerName";
+    public static String SESSION_ID_KEY = "sessionRoomID";
+    public static String CALLER_KEY = "callerName";
 
     private static final String NOTIFICATION_ID_KEY = "NOTIFICATION_ID";
     private static final String VOICE_CHANNEL = "default";
@@ -93,7 +94,11 @@ public class VoIPMessagingService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
         CallInvite invite = new CallInvite(data);
 
-        startActivity(new Intent(this, CallActivity.class));
+        Intent callIntent = new Intent(this, CallActivity.class);
+        callIntent.putExtra(SESSION_ID_KEY, invite.roomID);
+        callIntent.putExtra(CALLER_KEY, invite.callerName);
+
+        startActivity(callIntent);
 
         //showBasicNotification(invite);
     }

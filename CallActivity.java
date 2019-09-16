@@ -50,9 +50,16 @@ public class CallActivity extends Activity {
         Log.i("CallActivity", "AcceptCall");
         stopDefaultNotificationRingtone();
 
-        Intent i=new Intent(this,MessagingUnityPlayerActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(i);
+        Intent mainUnityActivity = new Intent(this,MessagingUnityPlayerActivity.class);
+        mainUnityActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        if (getIntent().getExtras() != null)
+        {
+            mainUnityActivity.putExtras(getIntent().getExtras());
+            startActivity(mainUnityActivity);
+        }
+        else
+            Log.e("Extras: ", "Extrass from VOIP class is null!");
     }
 
     public void DeclineCall(View view) {
