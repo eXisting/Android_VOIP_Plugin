@@ -20,10 +20,14 @@ import com.google.firebase.MessagingUnityPlayerActivity;
 public class CallActivity extends Activity {
 
     private MediaPlayer mMediaPlayer;
+    private Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        extras = getIntent().getExtras();
+
+        DisplayCallerInfo();
         WakeUpPhone();
 
         setContentView(R.layout.activity_call);
@@ -48,14 +52,12 @@ public class CallActivity extends Activity {
 
     public void AcceptCall(View view) {
         Log.i("CallActivity", "AcceptCall");
-        stopDefaultNotificationRingtone();
-
         Intent mainUnityActivity = new Intent(this,MessagingUnityPlayerActivity.class);
         mainUnityActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        if (getIntent().getExtras() != null)
+        if (extras != null)
         {
-            mainUnityActivity.putExtras(getIntent().getExtras());
+            mainUnityActivity.putExtras(extras);
             startActivity(mainUnityActivity);
         }
         else
@@ -65,6 +67,10 @@ public class CallActivity extends Activity {
     public void DeclineCall(View view) {
         Log.i("CallActivity", "DeclineCall");
         finish();
+    }
+
+    private void DisplayCallerInfo() {
+        // TODO
     }
 
     private void WakeUpPhone() {
