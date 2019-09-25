@@ -1,6 +1,7 @@
 package io.CareAR.connect;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -16,6 +17,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.firebase.MessagingUnityPlayerActivity;
+import com.unity3d.player.UnityPlayer;
+
 
 public class CallActivity extends Activity {
 
@@ -59,10 +62,14 @@ public class CallActivity extends Activity {
         {
             mainUnityActivity.putExtras(extras);
             startActivity(mainUnityActivity);
+
+            // TODO: gives "Native libraries not loaded - dropping message for" when there is no activity to use
+            UnityPlayer.UnitySendMessage("NativeBridge", "ProcessNativeCallWith", extras.toString());
         }
         else
             Log.e("Extras: ", "Extrass from VOIP class is null!");
 
+        extras = null;
         finish();
     }
 
