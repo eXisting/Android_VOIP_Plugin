@@ -95,6 +95,7 @@ public class VoIPMessagingService extends FirebaseMessagingService {
         CallInvite invite = new CallInvite(data);
 
         Intent callIntent = new Intent(this, CallActivity.class);
+        callIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         callIntent.putExtra(SESSION_ID_KEY, invite.roomID);
         callIntent.putExtra(CALLER_KEY, invite.callerName);
 

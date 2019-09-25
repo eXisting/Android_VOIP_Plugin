@@ -26,7 +26,7 @@ public class CallActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         extras = getIntent().getExtras();
-
+        Log.e("CallActivity: ", "onCreate!");
         DisplayCallerInfo();
         WakeUpPhone();
 
@@ -62,6 +62,8 @@ public class CallActivity extends Activity {
         }
         else
             Log.e("Extras: ", "Extrass from VOIP class is null!");
+
+        finish();
     }
 
     public void DeclineCall(View view) {
