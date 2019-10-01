@@ -1,0 +1,36 @@
+This instruction describes steps of creating Android plugin (Unity3d based).
+
+Task:
+Need to implement plugin that will show some UI (Activity) on Firebase OnMessageReceived method triggered
+in all device states (inactive, enabled, etc.) and connect that to Unity via unity.jar library file and send message to UnityActivity
+
+Implementation:
+1. Create empty application Android project
+2. Add new Android library module with package name equal to that you use inside your unity project (my case)
+3. Add repository files to src folder (google-services.json from Firebase is required)
+	- add required libraries
+	- change project gradle to include google dependencies
+	- change module gradle to have build deependencies
+4. Sync gradle
+5. Make *.aar files by Gradle -> Build -> Build (https://stackoverflow.com/questions/43358536/unity-ignores-android-plugin-manifest-file-leading-to-missing-service-element)
+
+UNITY REQUIRED STEPS FROM HERE
+
+6. Open .arr file as archive
+7. Remove libs folder from it
+8. Save and add to Assets/Plugins/Android folder (WARNING! Add it to root folder and not wrap it into folders)
+9. Change main unity AndroidManifest to include used classes:
+
+<!--WARNING: THESE LINES ARE REQUIRED BY VoIP PLUGIN FOR ANDROID
+DO NOT REMOVE THEM UNTIL YOU KNOW WHAT YOU ARE DOING!-->
+    <service android:name=".VoIPMessagingService" android:exported="false">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
+    <activity android:name=".CallActivity" />
+<!--End-->
+
+10. Provide custom gradle build file to include layout dependencies (implementation 'com.android.support.constraint:constraint-layout:1.1.3')
+
+You are done.
