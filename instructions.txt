@@ -17,7 +17,7 @@ Implementation:
 UNITY REQUIRED STEPS FROM HERE
 
 6. Open .arr file as archive
-7. Remove libs folder from it
+7. Remove libs folder from it as well as classes.jar's BuildConfig.java file!!!
 8. Save and add to Assets/Plugins/Android folder (WARNING! Add it to root folder and not wrap it into folders)
 9. Change main unity AndroidManifest to include used classes:
 
