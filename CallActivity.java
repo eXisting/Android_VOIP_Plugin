@@ -23,13 +23,15 @@ import com.unity3d.player.UnityPlayer;
 public class CallActivity extends Activity {
 
     private MediaPlayer mMediaPlayer;
-    private Bundle extras;
+    private CallInfoModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        extras = getIntent().getExtras();
+        model = new CallInfoModel(getIntent().getExtras());
+
         Log.e("CallActivity: ", "onCreate!");
+
         DisplayCallerInfo();
         WakeUpPhone();
 
@@ -58,18 +60,18 @@ public class CallActivity extends Activity {
         Intent mainUnityActivity = new Intent(this,MessagingUnityPlayerActivity.class);
         mainUnityActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        if (extras != null)
+        if (model.IsHasCallInfo())
         {
-            mainUnityActivity.putExtras(extras);
+            mainUnityActivity.putExtras(model.GetInfoAsBundle());
             startActivity(mainUnityActivity);
 
             // TODO: gives "Native libraries not loaded - dropping message for" when there is no activity to use
-            UnityPlayer.UnitySendMessage("NativeBridge", "ProcessNativeCallWith", extras.toString());
+            UnityPlayer.UnitySendMessage("NativeBridge", "ProcessNativeCallWith", model.BuildInfoString());
         }
         else
-            Log.e("Extras: ", "Extrass from VOIP class is null!");
+            Log.e("AcceptCall: ", "No call info from VOIP class!");
 
-        extras = null;
+        model.Reset();
         finish();
     }
 

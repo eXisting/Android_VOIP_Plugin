@@ -9,7 +9,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+//import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.MessagingUnityPlayerActivity;
@@ -22,7 +22,7 @@ public class VoIPMessagingService extends FirebaseMessagingService {
     private static String TITLE_KEY = "title";
     private static String MESSAGE_KEY = "body";
     public static String SESSION_ID_KEY = "sessionRoomID";
-    public static String CALLER_KEY = "callerName";
+    public static String CALLER_KEY = "displayName";
 
     private static final String NOTIFICATION_ID_KEY = "NOTIFICATION_ID";
     private static final String VOICE_CHANNEL = "default";
@@ -96,6 +96,7 @@ public class VoIPMessagingService extends FirebaseMessagingService {
 
         Intent callIntent = new Intent(this, CallActivity.class);
         callIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         callIntent.putExtra(SESSION_ID_KEY, invite.roomID);
         callIntent.putExtra(CALLER_KEY, invite.callerName);
 
@@ -118,33 +119,33 @@ public class VoIPMessagingService extends FirebaseMessagingService {
      * @param invite FCM message body received.
      */
     private void showBasicNotification(CallInvite invite) {
-        Intent intent = new Intent(this, MessagingUnityPlayerActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        String channelId = getString(R.string.fcm_fallback_notification_channel_label);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.mipmap.app_icon)
-                        .setContentTitle(invite.title)
-                        .setContentText(invite.message)
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+//        Intent intent = new Intent(this, MessagingUnityPlayerActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+//                PendingIntent.FLAG_ONE_SHOT);
+//
+//        String channelId = getString(R.string.fcm_fallback_notification_channel_label);
+//        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        NotificationCompat.Builder notificationBuilder =
+//                new NotificationCompat.Builder(this, channelId)
+//                        .setSmallIcon(R.mipmap.app_icon)
+//                        .setContentTitle(invite.title)
+//                        .setContentText(invite.message)
+//                        .setAutoCancel(true)
+//                        .setSound(defaultSoundUri)
+//                        .setContentIntent(pendingIntent);
+//
+//        NotificationManager notificationManager =
+//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//        // Since android Oreo notification channel is needed.
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel channel = new NotificationChannel(channelId,
+//                    "Channel human readable title",
+//                    NotificationManager.IMPORTANCE_DEFAULT);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//
+//        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
 }
